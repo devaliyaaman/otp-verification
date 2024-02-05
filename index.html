@@ -110,7 +110,6 @@
         const auth = getAuth(app);
 
 
-
         window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
             'size': 'normal',
             'callback': (response) => {
@@ -139,7 +138,7 @@
                     // user in with confirmationResult.confirm(code).
                     window.confirmationResult = confirmationResult;
                     // ...
-                    console.log("confirmationResult " + confirmationResult);
+                    console.log("confirmationResult " + JSON.parse(confirmationResult));
                 }).catch((error) => {
                     // Error; SMS not sent
                     // ...
