@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Phone Authentication Example</title>
+    <!-- Add Firebase CDN links for version 10 -->
+    <!-- <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js'
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js'
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcj40SpzLf3S1L3-GlKGiSKhFMyuVrmmo",
+            authDomain: "laboratoryapp-68984.firebaseapp.com",
+            projectId: "laboratoryapp-68984",
+            storageBucket: "laboratoryapp-68984.appspot.com",
+            messagingSenderId: "1051165002396",
+            appId: "1:1051165002396:web:f61cdf34aa9888e92b3b59",
+            measurementId: "G-H4S5GTXJ24"
+        };
+        const firebaseApp = initializeApp(firebaseConfig);
+
+        // Get authentication instance
+        const auth = getAuth(firebaseApp);
+    </script> -->
+    <!-- <script>
+
+
+        // Your JavaScript code
+        let confirmationResult;
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        function sendOTP() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+
+            const appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+                    window.confirmationResult = confirmationResult;
+                    // ...
+                }).catch((error) => {
+                    // ...
+                });
+        }
+
+        function verifyOTP() {
+            const code = document.getElementById('otp').value;
+
+            confirmationResult.confirm(code)
+                .then((result) => {
+                    const user = result.user;
+                    displayUserInfo(user);
+                    console.log('Phone number verified');
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
+        function displayUserInfo(user) {
+            const userInfo = document.getElementById('user-info');
+            userInfo.innerHTML = `<p>Welcome, ${user.phoneNumber}!</p>`;
+        }
+    </script> -->
+</head>
+
+<body>
+    <h1>Firebase Phone Authentication Example</h1>
+
+    <!-- Input for phone number -->
+    <input type="tel" id="phone" placeholder="Enter your phone number">
+
+    <div id="recaptcha-container"></div>
+    <!-- Button to send OTP -->
+    <button id="send">Send OTP</button>
+
+    <!-- Input for OTP -->
+    <input type="text" id="otp" placeholder="Enter OTP">
+
+    <!-- Button to verify OTP -->
+    <button onclick="verifyOTP()">Verify OTP</button>
+
+    <!-- Display user info -->
+    <div id="user-info"></div>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.4/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.4/firebase-analytics.js";
+        import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/9.9.4/firebase-auth.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcj40SpzLf3S1L3-GlKGiSKhFMyuVrmmo",
+            authDomain: "laboratoryapp-68984.firebaseapp.com",
+            projectId: "laboratoryapp-68984",
+            storageBucket: "laboratoryapp-68984.appspot.com",
+            messagingSenderId: "1051165002396",
+            appId: "1:1051165002396:web:f61cdf34aa9888e92b3b59",
+            measurementId: "G-H4S5GTXJ24"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+
+
+
+        window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+            'size': 'normal',
+            'callback': (response) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                // ...
+                console.log("captcha response" + response);
+            },
+            'expired-callback': () => {
+                // Response expired. Ask user to solve reCAPTCHA again.
+                // ...
+            }
+        }, auth);
+
+        recaptchaVerifier.render().then((widgetId) => {
+            window.recaptchaWidgetId = widgetId;
+        });
+
+        document.getElementById('send').addEventListener("click", function () {
+
+            const phonenumber = "+91" + document.getElementById('phone').value;
+            const appVerifier = window.recaptchaVerifier;
+
+            signInWithPhoneNumber(auth, phonenumber, appVerifier)
+                .then((confirmationResult) => {
+                    // SMS sent. Prompt user to type the code from the message, then sign the
+                    // user in with confirmationResult.confirm(code).
+                    window.confirmationResult = confirmationResult;
+                    // ...
+                    console.log("confirmationResult " + confirmationResult);
+                }).catch((error) => {
+                    // Error; SMS not sent
+                    // ...
+                    console.error("err - " + error);
+                });
+        })
+    </script>
+    <script>
+
+
+
+
+
+        function verifyOTP() {
+            const otp = document.getElementById('otp').value;
+
+            confirmationResult.confirm(otp).then(function (response) {
+                console.log(response);
+            })
+                .catch((error) => console.log(error))
+        }
+
+
+    </script>
+</body>
+
+</html>
