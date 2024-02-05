@@ -37,6 +37,7 @@
             firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
                 .then((confirmationResult) => {
                     window.confirmationResult = confirmationResult;
+                    console.log(confirmationResult);
                     // ...
                 }).catch((error) => {
                     // ...
