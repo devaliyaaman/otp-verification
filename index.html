@@ -115,7 +115,7 @@
             'callback': (response) => {
                 // reCAPTCHA solved, allow signInWithPhoneNumber.
                 // ...
-                console.log("captcha response" + response);
+                console.log("captcha verified");
             },
             'expired-callback': () => {
                 // Response expired. Ask user to solve reCAPTCHA again.
@@ -138,11 +138,11 @@
                     // user in with confirmationResult.confirm(code).
                     window.confirmationResult = confirmationResult;
                     // ...
-                    console.log("confirmationResult " + JSON.parse(confirmationResult));
+                    // console.log("confirmationResult " + JSON.parse(confirmationResult));
                 }).catch((error) => {
                     // Error; SMS not sent
                     // ...
-                    console.error("err - " + error);
+                    console.error("erroor - " + error);
                 });
         })
     </script>
